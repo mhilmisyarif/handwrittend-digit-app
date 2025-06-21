@@ -10,12 +10,18 @@ def load_generator_model():
     try:
         # Ensure the path matches where you saved the model in Part 1
         model_path = './cgan_generator_mnist.h5'
+        # Important: When loading a custom model, ensure it's built or compile if needed.
+        # For pure inference, load_model is usually sufficient if saved correctly.
         model = tf.keras.models.load_model(model_path)
+        # Optional: Print model summary to verify its structure after loading
+        # model.summary()
         return model
     except Exception as e:
         st.error(f"Error loading model: {e}")
         st.info("Please ensure the CGAN training script (Part 1) has been run successfully "
                 "and 'cgan_generator_mnist.h5' exists in the same directory.")
+        st.info("If the file exists, the error might be due to a TensorFlow/Keras version mismatch "
+                "between where the model was saved and where it's being loaded.")
         return None
 
 # Load the generator model
@@ -107,8 +113,8 @@ if st.button("Generate Images"):
             # Repeat the one-hot vector for the number of images to generate
             labels = tf.keras.utils.to_categorical([selected_digit] * num_images_to_generate, num_classes=10)
 
-            # Generate images using the loaded generator model
-            generated_images = generator([noise, labels], training=False)
+            # --- FIX: Removed training=False from the generator call ---
+            generated_images = generator([noise, labels])
 
             # Rescale images from [-1, 1] to [0, 1] for displaying
             generated_images = (generated_images * 0.5) + 0.5
