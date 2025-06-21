@@ -96,12 +96,7 @@ with col1:
         options=list(range(10)), # Dropdown from 0 to 9
         index=2 # Default to digit 2 as per example image
     )
-
-with col2:
-    st.write("") # Spacer for alignment
-    st.write("") # Spacer for alignment
-    num_images_to_generate = st.slider("Number of images to generate:", min_value=1, max_value=10, value=5)
-
+num_images_to_generate = 5
 
 if st.button("Generate Images"):
     if generator is not None:
