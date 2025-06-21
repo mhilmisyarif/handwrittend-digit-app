@@ -111,7 +111,9 @@ if st.button("Generate Images"):
 
             # Create one-hot encoded labels for the selected digit
             # Repeat the one-hot vector for the number of images to generate
-            labels = tf.keras.utils.to_categorical([selected_digit] * num_images_to_generate, num_classes=10)
+            labels_numpy = tf.keras.utils.to_categorical([selected_digit] * num_images_to_generate, num_classes=10)
+            # --- FIX: Explicitly convert labels to a TensorFlow tensor ---
+            labels = tf.convert_to_tensor(labels_numpy, dtype=tf.float32)
 
             # --- FIX: Removed training=False from the generator call ---
             generated_images = generator([noise, labels])
